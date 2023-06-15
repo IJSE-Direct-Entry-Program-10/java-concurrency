@@ -2,7 +2,6 @@ package interthread.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,7 +27,7 @@ public class DatabaseCP {
                         .getConnection("jdbc:mysql://localhost:3306",
                                 "root", "mysql"));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
