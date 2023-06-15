@@ -1,19 +1,14 @@
-import java.lang.reflect.Executable;
-import java.util.concurrent.Executor;
+package bootstrap;
 
-public class Demo4 {
+public class Demo3 {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Thread t1 = new Thread(new RunnableImpl(), "t1");
         t1.start();
         for (int i = 0; i < 1000; i++) {
             System.out.printf("%s:%d %n", Thread.currentThread().getName(), i);
         }
         System.out.println("Main thread is about to die");
-        System.out.println("main: But hey, let's wait for the t1");
-        //while (t1.isAlive());
-        t1.join();
-        System.out.println("main: Okay, let's rest in peace");
     }
 
     static class RunnableImpl implements Runnable {

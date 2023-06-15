@@ -1,3 +1,5 @@
+package bootstrap;
+
 public class Demo2 {
 
     static Thread mainThread;
