@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
@@ -22,16 +23,21 @@ public class CustomerHTTPController2 {
     @GetMapping("/all/names")
     public List<String> getCustomerNames() throws InterruptedException {
         System.out.println(Thread.currentThread().getName() + ": entered to getCustomerNames()");
-        System.out.println(Thread.currentThread().getName() + ": is waiting to acquire the lock of Name");
-        lock1.lock();
-            System.out.println(Thread.currentThread().getName() + ": has been acquired the lock successfully of Name");
-            customerNameList.clear();
-            Faker faker = new Faker();
-            for (int i = 0; i < 5; i++) {
-                customerNameList.add(faker.name().fullName());
-                Thread.sleep(customerNameList.size() % 2 == 0 ? 250 : 500);
-            }
-            System.out.println(Thread.currentThread().getName() + ": is about to release the lock successfully of Name");
+        int attempt = 0;
+        System.out.println(Thread.currentThread().getName() + ": is trying to acquire the lock of Name");
+        while (!lock1.tryLock(50, TimeUnit.MILLISECONDS)){
+            System.out.println(Thread.currentThread().getName() +
+            ": wasn't able to acquire the lock of Name at " + ++attempt + ", trying again after 50 milli second");
+//            Thread.sleep(50);
+        }
+        System.out.println(Thread.currentThread().getName() + ": has been acquired the lock successfully of Name");
+        customerNameList.clear();
+        Faker faker = new Faker();
+        for (int i = 0; i < 5; i++) {
+            customerNameList.add(faker.name().fullName());
+            Thread.sleep(customerNameList.size() % 2 == 0 ? 250 : 500);
+        }
+        System.out.println(Thread.currentThread().getName() + ": is about to release the lock successfully of Name");
         lock1.unlock();
         System.out.println(Thread.currentThread().getName() + ": is about to exit from getCustomerNames()");
         return (List<String>) customerNameList.clone();
