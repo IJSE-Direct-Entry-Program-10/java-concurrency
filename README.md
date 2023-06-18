@@ -2,5 +2,8 @@
 
 A collection of projects to explore Java Concurrency Programming
 
+### Auxiliary Materials
+[Live Lock Explanation Video](https://drive.google.com/file/d/1mUobDc-e1GC-rXu-4l3WD0XPcXCqCWUi/view?usp=sharing)
+
 ### License
 Copyright &copy; 2023 DEP-10. All Rights Reserved.
